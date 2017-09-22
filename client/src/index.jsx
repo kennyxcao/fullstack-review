@@ -8,14 +8,15 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = { 
-      repos: []
+      repos: ['1', '2']
     }
 
   }
 
   search (term) {
     console.log(`${term} was searched`);
-    // TODO
+    // TODO - AJAX POST request to /repos
+    
   }
 
   render () {

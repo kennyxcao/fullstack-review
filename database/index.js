@@ -11,7 +11,7 @@ let repoSchema = mongoose.Schema({
   htmlURL: String, // html_url
   cloneURL: String, // clone_url
   createdAt: Date, // created_at
-  size: Number, // Size
+  size: Number, // size
   forks: Number, // forks
   watchers: Number, // watchers
 });
