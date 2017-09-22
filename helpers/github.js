@@ -14,7 +14,7 @@ let getReposByUsername = (githubHandle, callback) => {
   
   request.get(options, function(error, response, body) {
     if (error) { console.log(error); }
-    let repos = JSON.parse(body); // repos in json format
+    const repos = JSON.parse(body); // repos in json format
     callback(repos);
   });
 
