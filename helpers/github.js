@@ -13,9 +13,9 @@ let getReposByUsername = (githubHandle, callback) => {
   };
   
   request.get(options, function(error, response, body) {
-    if (error) { console.log(error); }
+    if (error) { console.error(error); }
     const repos = JSON.parse(body); // repos in json format
-    callback(repos);
+    callback(repos); // invoke save() from database/index.js
   });
 
 };
