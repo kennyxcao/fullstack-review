@@ -23,7 +23,7 @@ class App extends React.Component {
     $.ajax({
       url: 'http://127.0.0.1:1128/repos',      
       type: 'GET',
-      contentType: 'application/json',
+      dataType: 'json',
       success: (topRepos) => {
         console.log('GET /repos success');
         this.setState({

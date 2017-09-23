@@ -2,8 +2,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const helpers = require('../helpers/github');
 const db = require('../database/index');
-
-
+const Promise = require('bluebird');
 
 let app = express();
 
@@ -16,32 +15,33 @@ app.use(helpers.setHeaders);
 app.use(express.static(__dirname + '/../client/dist'));
 
 app.post('/repos', function (req, res) {
-  // TODO - your code here!
-  // This route should take the github username provided
-  // and get the repo information from the github API, then
-  // save the repo information in the database
+  // This route should take the github username provided and get the repo information from the github API, then save the repo information in the database
   let username = req.body.term;
   
   helpers.getReposByUsername(username, (repos) => {
     if (repos.length > 0) {
-      db.save(repos);
+      db.save(repos)
+        .then((results) => {
+          console.log(results.length + ' New Entries Added');
+          res.status(201).send();
+        })
+        .catch((error) => {
+          console.error(error);
+          res.status(500).send();
+        });
     }
   });
     
-  res.status(201).send();
 });
 
 app.get('/repos', function (req, res) {
-  // TODO - your code here!
   // This route should send back the top 25 repos
-  
-  // Get top 25 repos based on watchers
+  // Get top 25 repos based on watchers count
   db.Repo.find()
         .sort('-watchers')
         .limit(25)
         .exec((err, docs) => {
           if (err) { console.error(err); }
-          //console.log(docs);
           res.set('Content-Type', 'application/json');          
           res.send(JSON.stringify(docs));
         });
