@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
+  "engines": {
+    "node": "6.11.1"
+  },
   "scripts": {
     "postinstall": "curl -s https://raw.githubusercontent.com/reactorcore/pomander/master/bin/install | bash",
     "react-dev": "webpack -d --watch",
@@ -10,7 +13,7 @@
     "lint": "eslint ./",
     "start": "node server/index.js"
   },
-  "author": "Beth Johnson",
+  "author": "Beth Johnson / Kenny Cao",
   "license": "ISC",
   "devDependencies": {
     "babel-core": "^6.23.1",
