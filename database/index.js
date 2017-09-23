@@ -50,30 +50,5 @@ let save = (repos) => {
           .then((newEntries) => Promise.map(newEntries, (newEntry) => Repo.create(newEntry)));
 };
 
-// let getTopTwentyFiveWatchersRepos = (callback) => {
-//   return Repo.find()
-//           .limit(25)
-//           .sort('-watchers')
-//           .then((results) => {
-//             console.log(results);
-//             return results;
-//           });
-// };
-
-// Sample document entry
-// { __v: 0,
-//   repoID: 18221276,
-//   name: 'git-consortium',
-//   owner: 'octocat',
-//   ownerID: 583231,
-//   description: 'This repo is for demonstration purposes only.',
-//   htmlURL: 'https://github.com/octocat/git-consortium',
-//   cloneURL: 'https://github.com/octocat/git-consortium.git',
-//   createdAt: 2014-03-28T17:55:38.000Z,
-//   size: 190,
-//   forks: 24,
-//   watchers: 7,
-//   _id: 59c593052695931889f49667 }
-
 module.exports.Repo = Repo;
 module.exports.save = save;
