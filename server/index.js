@@ -1,5 +1,17 @@
 const express = require('express');
+const bodyParser = require('body-parser');
+const helpers = require('../helpers/github');
+const db = require('../database/index');
+
+
+
 let app = express();
+
+// Express JS body parser
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(helpers.setHeaders);
+
 
 app.use(express.static(__dirname + '/../client/dist'));
 
@@ -8,6 +20,15 @@ app.post('/repos', function (req, res) {
   // This route should take the github username provided
   // and get the repo information from the github API, then
   // save the repo information in the database
+  let username = req.body.term;
+  
+  helpers.getReposByUsername(username, (repos) => {
+    if (repos.length > 0) {
+      db.save(repos);
+    }
+  });
+
+  res.status(201).send();
 });
 
 app.get('/repos', function (req, res) {

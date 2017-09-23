@@ -8,18 +8,19 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = { 
-      repos: ['1', '2']
+      repos: []
     };
 
   }
 
   search (term) {
     console.log(`${term} was searched`);
+    console.log(JSON.stringify({term}));
     // TODO - AJAX POST request to /repos
     $.ajax({
-      method: 'POST',
-      url: 'http://127.0.0.1:1128/repos',
-      data: {term},
+      url: 'http://127.0.0.1:1128/repos',      
+      type: 'POST',
+      data: JSON.stringify({term}),
       contentType: 'application/json',
       success: (data) => {
         console.log('POST to /repos success');

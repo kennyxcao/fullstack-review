@@ -20,4 +20,27 @@ let getReposByUsername = (githubHandle, callback) => {
 
 };
 
+// let parseBody = (req, res, next) => {
+//   var body = [];
+//   req.on('data', (chunk) => body.push(chunk));
+//   req.on('end', () => {
+//     body = [].concat(body).toString();
+//     if (body) {
+//       req.body = JSON.parse(body);      
+//     }
+//     next();
+//   });
+// };
+
+let setHeaders = (req, res, next) => {
+  res.set('Access-Control-Allow-Origin', '*' );
+  res.set('Access-Control-Allow-Methods', 'POST, GET, OPTIONS');
+  res.set('Access-Control-Allow-Headers', 'Content-Type');
+  // res.set('Access-Control-Max-Age', 10);
+  //console.log(res.header()._headers);
+  next();
+};
+
 module.exports.getReposByUsername = getReposByUsername;
+module.exports.setHeaders = setHeaders;
+// module.exports.parseBody = parseBody;
