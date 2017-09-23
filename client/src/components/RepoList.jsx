@@ -5,6 +5,6 @@ const RepoList = (props) => (
     <h4> Repo List Component </h4>
     There are {props.repos.length} repos.
   </div>
-)
+);
 
 export default RepoList;

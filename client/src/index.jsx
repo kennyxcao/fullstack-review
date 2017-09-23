@@ -10,9 +10,31 @@ class App extends React.Component {
     this.state = { 
       repos: []
     };
-
+    this.search = this.search.bind(this);
+    this.loadTopRepos = this.loadTopRepos.bind(this);
   }
-
+  
+  componentDidMount() {
+    this.loadTopRepos(); 
+  }
+  
+  loadTopRepos () {
+    $.ajax({
+      url: 'http://127.0.0.1:1128/repos',      
+      type: 'GET',
+      contentType: 'application/json',
+      success: (topRepos) => {
+        console.log('GET /repos success');
+        this.setState({
+          repos: topRepos
+        });
+      },
+      error: (error) => {
+        console.error('GET /repos failed', error);
+      }
+    }); 
+  }
+  
   search (term) {
     console.log(`${term} was searched`);
     console.log(JSON.stringify({term}));
@@ -35,7 +57,7 @@ class App extends React.Component {
     return (<div>
       <h1>Github Fetcher</h1>
       <RepoList repos={this.state.repos}/>
-      <Search onSearch={this.search.bind(this)}/>
+      <Search onSearch={this.search}/>
     </div>);
   }
 }

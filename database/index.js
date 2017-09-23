@@ -62,7 +62,7 @@ let save = (data) => {
     Repo.findOne({repoID: repo.repoID}, (error, record) => {
       if (!record) {
         Repo.create(repo, (error, newRecord) => {
-          console.log(newRecord);
+          //console.log(newRecord);
         });
       }
     });
@@ -71,7 +71,19 @@ let save = (data) => {
   return;
 };
 
+let getTopTwentyFiveWatchersRepos = (callback) => {
+  return Repo.find()
+          .limit(25)
+          .sort('-watchers')
+          .then((results) => {
+            console.log(results);
+            return results;
+          });
+};
+
+module.exports.Repo = Repo;
 module.exports.save = save;
+// module.exports.getTopTwentyFiveWatchersRepos = getTopTwentyFiveWatchersRepos;
 
 // var sampleRepos = [
 //   {

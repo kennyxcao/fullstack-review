@@ -27,13 +27,23 @@ app.post('/repos', function (req, res) {
       db.save(repos);
     }
   });
-
+    
   res.status(201).send();
 });
 
 app.get('/repos', function (req, res) {
   // TODO - your code here!
   // This route should send back the top 25 repos
+  
+  // Get top 25 repos based on watchers
+  db.Repo.find('watchers')
+        .limit(25)
+        .exec((err, docs) => {
+          if (err) { console.error(err); }
+          console.log(docs);
+          res.set('Content-Type', 'application/json');          
+          res.send(JSON.stringify(docs));
+        });
 });
 
 let port = 1128;
