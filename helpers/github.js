@@ -29,7 +29,7 @@ let setHeaders = (req, res, next) => {
 module.exports.getReposByUsername = getReposByUsername;
 module.exports.setHeaders = setHeaders;
 
-// - Use bodyParser npm module instead -
+// ************** Use bodyParser npm module instead *************
 // let parseBody = (req, res, next) => {
 //   var body = [];
 //   req.on('data', (chunk) => body.push(chunk));
