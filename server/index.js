@@ -17,23 +17,15 @@ app.post('/repos', function (req, res) {
   let username = req.body.term;
   helpers.getReposByUsername(username, (repos) => {
     if (repos.length > 0) {
-      db.save(repos)
-        .then((results) => {
-          console.log(results.length + ' New Entries Added');
-          res.status(201).send();
-        })
-        .catch((error) => {
-          console.error(error);
-          res.status(500).send();
-        });
+      db.save(repos).then((results) => res.redirect('/repos'));
     }
   });
 });
 
-// This route should send back the top 25 repos based on watchers count
+// This route should send back the top 25 repos based on stars count
 app.get('/repos', function (req, res) {
   db.Repo.find()
-        .sort('-watchers')
+        .sort('-stars')
         .limit(25)
         .exec((err, docs) => {
           if (err) { console.error(err); }
@@ -42,7 +34,7 @@ app.get('/repos', function (req, res) {
         });
 });
 
-let port = 1128;
+let port = process.env.PORT || 1128;
 
 app.listen(port, function() {
   console.log(`listening on port ${port}`);

@@ -18,7 +18,8 @@ let repoSchema = mongoose.Schema({
   createdAt: Date, // created_at
   size: Number, // size
   forks: Number, // forks
-  watchers: Number // watchers
+  watchers: Number, // watchers
+  stars: Number // stargazers_count
 });
 
 let Repo = mongoose.model('Repo', repoSchema);
@@ -28,26 +29,36 @@ let formatNewRecord = (record, raw) => {
     return false;
   }
   return {
-    repoID: raw.id, // id
-    name: raw.name, // name
-    owner: raw.owner.login, // owner.login
-    ownerID: raw.owner.id, // owner.id
-    description: raw.description, // description
-    htmlURL: raw['html_url'], // html_url
-    cloneURL: raw['clone_url'], // clone_url
-    createdAt: raw['created_at'], // created_at
-    size: raw.size, // size
-    forks: raw.forks, // forks
-    watchers: raw.watchers // watchers      
+    repoID: raw.id,
+    name: raw.name,
+    owner: raw.owner.login,
+    ownerID: raw.owner.id,
+    description: raw.description,
+    htmlURL: raw['html_url'],
+    cloneURL: raw['clone_url'],
+    createdAt: raw['created_at'],
+    size: raw.size,
+    forks: raw.forks,
+    watchers: raw.watchers,
+    stars: raw['stargazers_count']
   };
 };
 
 let save = (repos) => { 
-  // Input: Array of parsed JSON objects
-  // Output: Promise to insert new repo entries
-  return Promise.map(repos, (repo) => Repo.findOne({repoID: repo.id}).exec())
-          .then((filteredRecords) => filteredRecords.map((record, i) => formatNewRecord(record, repos[i])).filter((record) => record))
-          .then((newEntries) => Promise.map(newEntries, (newEntry) => Repo.create(newEntry)));
+  // I: Array of parsed JSON objects
+  // O: Promise to insert new repo entries
+  
+  // Find, update or insert method
+  return Promise.map(repos, (repo) => Repo.findOneAndUpdate({repoID: repo.id}, formatNewRecord(null, repo), {upsert: true, setDefaultsOnInsert: true}).exec());
+
+  // *********** Create each repo entry and handle duplicate error gracefully ****************************
+  // return Promise.map(repos, (repo) => new Repo(formatNewRecord(null, repo)).save().catch(err => err));
+  // return Promise.map(repos, (repo) => Repo.create(formatNewRecord(null, repo)).catch(err => err));
+
+  // *********** Filter out duplicate repo manually - not needed if catch duplicate error from mongodb gracefully **************************
+  // return Promise.map(repos, (repo) => Repo.findOne({repoID: repo.id}).exec())
+  //         .then((filteredRecords) => filteredRecords.map((record, i) => formatNewRecord(record, repos[i])).filter((record) => record))
+  //         .then((newEntries) => Promise.map(newEntries, (newEntry) => Repo.create(newEntry)));
 };
 
 module.exports.Repo = Repo;
