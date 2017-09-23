@@ -5,7 +5,6 @@ mongoose.Promise = require('bluebird');
 mongoose.connect('mongodb://localhost/fetcher', {useMongoClient: true});
 
 let repoSchema = mongoose.Schema({
-  // TODO: your schema here!
   repoID: {
     type: Number,
     unique: true
@@ -45,42 +44,10 @@ let formatNewRecord = (record, raw) => {
 
 let save = (repos) => { 
   // Input: Array of parsed JSON objects
+  // Output: Promise to insert new repo entries
   return Promise.map(repos, (repo) => Repo.findOne({repoID: repo.id}).exec())
           .then((filteredRecords) => filteredRecords.map((record, i) => formatNewRecord(record, repos[i])).filter((record) => record))
           .then((newEntries) => Promise.map(newEntries, (newEntry) => Repo.create(newEntry)));
-
-
-  // // Input arrays of repos data from helpers/getReposByUsername
-  // // This function should save a repo or repos to the MongoDB
-  // let repos = data.reduce((arr, repo) => {
-  //   arr.push({
-  //     repoID: repo.id, // id
-  //     name: repo.name, // name
-  //     owner: repo.owner.login, // owner.login
-  //     ownerID: repo.owner.id, // owner.id
-  //     description: repo.description, // description
-  //     htmlURL: repo['html_url'], // html_url
-  //     cloneURL: repo['clone_url'], // clone_url
-  //     createdAt: repo['created_at'], // created_at
-  //     size: repo.size, // size
-  //     forks: repo.forks, // forks
-  //     watchers: repo.watchers // watchers  
-  //   });
-  //   return arr;
-  // }, []);
-  
-  // // TODO - filter out exisitng repo record in database
-  // for (let i = 0; i < repos.length; i++) {
-  //   let repo = repos[i];
-  //   Repo.findOne({repoID: repo.repoID}, (error, record) => {
-  //     if (!record) {
-  //       Repo.create(repo, (error, newRecord) => {
-  //         //console.log(newRecord);
-  //       });
-  //     }
-  //   });
-  // }  
-
 };
 
 // let getTopTwentyFiveWatchersRepos = (callback) => {
