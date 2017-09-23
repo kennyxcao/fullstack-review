@@ -36,11 +36,12 @@ app.get('/repos', function (req, res) {
   // This route should send back the top 25 repos
   
   // Get top 25 repos based on watchers
-  db.Repo.find('watchers')
+  db.Repo.find()
+        .sort('-watchers')
         .limit(25)
         .exec((err, docs) => {
           if (err) { console.error(err); }
-          console.log(docs);
+          //console.log(docs);
           res.set('Content-Type', 'application/json');          
           res.send(JSON.stringify(docs));
         });

@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import $ from 'jquery';
 import Search from './components/Search.jsx';
 import RepoList from './components/RepoList.jsx';
+import RepoListEntry from './components/RepoListEntry.jsx';
 
 class App extends React.Component {
   constructor(props) {
@@ -11,14 +12,14 @@ class App extends React.Component {
       repos: []
     };
     this.search = this.search.bind(this);
-    this.loadTopRepos = this.loadTopRepos.bind(this);
+    this.fetch = this.fetch.bind(this);
   }
   
   componentDidMount() {
-    this.loadTopRepos(); 
+    this.fetch(); 
   }
   
-  loadTopRepos () {
+  fetch () {
     $.ajax({
       url: 'http://127.0.0.1:1128/repos',      
       type: 'GET',
@@ -37,7 +38,6 @@ class App extends React.Component {
   
   search (term) {
     console.log(`${term} was searched`);
-    console.log(JSON.stringify({term}));
     // TODO - AJAX POST request to /repos
     $.ajax({
       url: 'http://127.0.0.1:1128/repos',      
@@ -46,6 +46,7 @@ class App extends React.Component {
       contentType: 'application/json',
       success: (data) => {
         console.log('POST to /repos success');
+        this.fetch();
       },
       error: (error) => {
         console.error('POST to /repos failed', error);
