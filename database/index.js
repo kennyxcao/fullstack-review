@@ -2,7 +2,9 @@ const mongoose = require('mongoose');
 const Promise = require('bluebird');
 mongoose.Promise = require('bluebird');
 
-mongoose.connect('mongodb://localhost/fetcher', {useMongoClient: true});
+const mongodbURI = process.env.MONGODB_URI || 'mongodb://localhost/fetcher';
+
+mongoose.connect(mongodbURI, {useMongoClient: true});
 
 let repoSchema = mongoose.Schema({
   repoID: {
