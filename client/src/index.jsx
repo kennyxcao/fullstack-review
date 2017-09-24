@@ -21,7 +21,7 @@ class App extends React.Component {
   
   fetch () {
     $.ajax({
-      url: 'http://127.0.0.1:1128/repos',      
+      url: `http://127.0.0.1:${process.env.PORT || 1128}/repos`,
       type: 'GET',
       dataType: 'json',
       success: (topRepos) => {
@@ -38,7 +38,7 @@ class App extends React.Component {
   
   search (term) {
     $.ajax({
-      url: 'http://127.0.0.1:1128/repos',      
+      url: `http://127.0.0.1:${process.env.PORT || 1128}/repos`,    
       type: 'POST',
       data: JSON.stringify({term}),
       contentType: 'application/json',
